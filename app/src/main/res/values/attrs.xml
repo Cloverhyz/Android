@@ -1,0 +1,27 @@
+<resources>
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="border_overlay" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="rainbowbar">
+        <attr name="rainbowbar_hspace" format="dimension"></attr>
+        <attr name="rainbowbar_vspace" format="dimension"></attr>
+        <attr name="rainbowbar_color" format="color"></attr>
+    </declare-styleable>
+    <declare-styleable name="NinePhotoView">
+        <attr name="ninephoto_hspace" format="dimension"></attr>
+        <attr name="ninephoto_vspace" format="dimension"></attr>
+    </declare-styleable>
+    <declare-styleable name="TopBar">
+        <attr name="title" format="string"/>
+        <attr name="titleTextSize" format="dimension"/>
+        <attr name="titleTextColor" format="color"/>
+        <attr name="rightTextColor" format="color"/>
+        <attr name="rightBackground" format="reference|color"/>
+        <attr name="rightText" format="string"/>
+        <attr name="leftTextColor" format="color"/>
+        <attr name="leftBackground" format="reference|color"/>
+        <attr name="leftText" format="string"/>
+    </declare-styleable>
+</resources>

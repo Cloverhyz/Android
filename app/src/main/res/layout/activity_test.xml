@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_test"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.kangningj.myapplication.activity.TestActivity"
+    android:orientation="vertical">
+
+    <com.example.kangningj.myapplication.customview.TopBar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:leftBackground="@color/colorPrimaryDark"
+        app:leftText="首页"
+        app:leftTextColor="#FFFFFF"
+        app:rightBackground="@color/colorPrimaryDark"
+        app:rightText="退出"
+        app:rightTextColor="#FFFFFF"
+        app:title="商品信息"
+        app:titleTextColor="#123412"
+        app:titleTextSize="10sp"/>
+    <com.example.kangningj.myapplication.customview.RainbowBar
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="20dp"
+        app:rainbowbar_color="@android:color/holo_red_light"
+        app:rainbowbar_hspace="30dp"
+        app:rainbowbar_vspace="10dp"/>
+
+    <com.example.kangningj.myapplication.customview.NinePhotoView
+        android:id="@+id/photoView"
+        android:layout_width="match_parent"
+        android:layout_height="433dp"
+        app:ninephoto_hspace="5dp"
+        app:ninephoto_vspace="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"/>
+
+</LinearLayout>
