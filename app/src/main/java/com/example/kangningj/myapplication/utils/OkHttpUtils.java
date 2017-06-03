@@ -1,8 +1,16 @@
 package com.example.kangningj.myapplication.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.example.kangningj.myapplication.callpackage.HttpCallBack;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,5 +41,6 @@ public class OkHttpUtils {
             }
         }).start();
     }
+
 
 }

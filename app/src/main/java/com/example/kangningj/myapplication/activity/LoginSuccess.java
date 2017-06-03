@@ -1,5 +1,6 @@
 package com.example.kangningj.myapplication.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -25,7 +26,7 @@ import com.example.kangningj.myapplication.popupWindow.SelectPicPopupWindow;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class LoginSuccess extends AppCompatActivity implements View.OnClickListener {
+public class LoginSuccess extends Activity implements View.OnClickListener {
 
     private TextView textView;
     private SelectPicPopupWindow menuWindow;

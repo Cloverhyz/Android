@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="magic-viewpager-1.0.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/fe85a83e29a37f02b374be4becd8044a14ac5416/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/fe85a83e29a37f02b374be4becd8044a14ac5416/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zhy/magic-viewpager/1.0.1/9ab704cd5fa03e15181c428ada09859229845e88/magic-viewpager-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

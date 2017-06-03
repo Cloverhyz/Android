@@ -1,42 +1,42 @@
 package com.example.kangningj.myapplication.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.kangningj.myapplication.R;
-import com.example.kangningj.myapplication.callpackage.HttpCallBack;
-import com.example.kangningj.myapplication.customview.CircleImageView;
-import com.example.kangningj.myapplication.utils.OkHttpUtils;
+import com.example.kangningj.myapplication.adapter.BookShelfListViewAdapter;
+import com.example.kangningj.myapplication.fragment.BaseFragment;
+import com.example.kangningj.myapplication.fragment.CartFragment;
+import com.example.kangningj.myapplication.fragment.UserFragment;
+import com.example.kangningj.myapplication.fragment.HomeFragment;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher ,HttpCallBack{
+import java.util.ArrayList;
 
-    private String url = "http://img0.bdstatic.com/img/image/shouye/xiaoxiao/%E5%B0%8F%E6%B8%85%E6%96%B0614.jpg";
-    private CircleImageView mLoginHead;
-    private Button btLogin;
-    private EditText etUserName;
-    private EditText etPassWord;
-    private boolean res = false;
-    private Handler handler = new Handler() {
+public class MainActivity extends FragmentActivity {
+    RadioGroup rgmain;
+    private ArrayList<BaseFragment> mFragments;
+    private BaseFragment mContext;
+    private String accountName;
+    private String accountId;
+    public Handler mHandler = new Handler(){
         @Override
-        public void handleMessage(Message message) {
-            if (message.what == 1002) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, LoginSuccess.class);
-                intent.putExtra("msg", (String) message.obj);
-                startActivity(intent);
-            } else {
-                Toast.makeText(MainActivity.this, R.string.errorMsg, Toast.LENGTH_SHORT).show();
+        public void handleMessage(Message msg) {
+            if(msg.what == 1){
+                BookShelfListViewAdapter bookShelfListViewAdapter = (BookShelfListViewAdapter) msg.obj;
+                bookShelfListViewAdapter.notifyDataSetChanged();
+            }else if(msg.what==2){
+                initEvent();
+            }else if (msg.what==3){
+                Toast.makeText(MainActivity.this, (String) msg.obj,Toast.LENGTH_SHORT).show();
             }
+            super.handleMessage(msg);
         }
     };
 
@@ -44,120 +44,89 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btLogin = (Button) findViewById(R.id.bt_login);
-        etUserName = (EditText) findViewById(R.id.et_userName);
-        etPassWord = (EditText) findViewById(R.id.et_passWord);
-        mLoginHead = (CircleImageView) findViewById(R.id.imv_login);
-        btLogin.setOnClickListener(this);
-        etUserName.addTextChangedListener(this);
+        Intent mIntent = getIntent();
+        accountName = mIntent.getStringExtra("accountName");
+        accountId = mIntent.getStringExtra("accountId");
+        initView();
+        initData();
+        initEvent();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.bt_login:
-                /*Message message = new Message();
-                message.what = 1002;
-                handler.sendMessage(message);*/
-                accountLogin();
-                break;
-            default:
-                break;
-        }
+    private void initData() {
+        //创建5个fragment并添加到容器
+        mFragments = new ArrayList<>();
+        mFragments.add(new HomeFragment());
+        mFragments.add(new CartFragment());
+        mFragments.add(new UserFragment());
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("Log", "destory");
-    }
-
-    private boolean accountLogin() {
-        new Thread(new Runnable() {
+    private void initEvent() {
+        //radioGroup选中事件
+        rgmain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void run() {
-                try {
-                    String url = "http://10.2.21.73:8080/book-web/accountInfo/mlogin";
-                    url = url+ "?accountName=" +etUserName.getText().toString()+"&accountPassword=" +etPassWord.getText().toString();
-                    /*URL url = new URL("http://10.2.21.254:8080/book-web/accountInfo/mlogin");
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.setDoOutput(true);
-                    httpURLConnection.setDoInput(true);
-                    httpURLConnection.setUseCaches(false);
-                    httpURLConnection.setConnectTimeout(3000);
-                    httpURLConnection.setRequestMethod("POST");
-                    httpURLConnection.setRequestProperty("Charset", "UTF-8");
-                    String param = "accountName=" + URLEncoder.encode(etUserName.getText().toString(), "UTF-8") + "&accountPassword=" + URLEncoder.encode(etPassWord.getText().toString(), "UTF-8");
-                    httpURLConnection.setRequestProperty("Connection", "keep-alive");
-                    httpURLConnection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
-                    httpURLConnection.setRequestProperty("Content-Length",String.valueOf(param.getBytes().length));
-                    httpURLConnection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 6.3; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0");
-                    OutputStream outputStream = httpURLConnection.getOutputStream();
-                    outputStream.write(param.getBytes());
-                    outputStream.flush();
-                    if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK||true) {
-                        InputStream inputStream = httpURLConnection.getInputStream();
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                        StringBuilder stringBuilder = new StringBuilder();
-                        String result = null;
-                        try {
-                            while ((result = reader.readLine()) != null) {
-                                stringBuilder.append(result);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            inputStream.close();
-                        }
-                        if ("success".equals(stringBuilder.toString())||true) {
-                            res = true;
-                            message.what = 1002;
-                        }
-                    }*/
-                    OkHttpUtils.getStringResponse(MainActivity.this,url);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            public void onCheckedChanged(RadioGroup radioGroup, int checkId) {
+                int curPosition = 0; //viewGroup当前选中索引
+                switch (checkId) {
+                    case R.id.rb_home:
+                        curPosition = 0;
+                        break;
+                    case R.id.rb_cart:
+                        curPosition = 1;
+                        break;
+                    case R.id.rb_user:
+                        curPosition = 2;
+                        break;
+                }
+                //switchFragment(mFragments.get(curPosition));
+                switchFragment(mContext, mFragments.get(curPosition));
+            }
+        });
+        rgmain.check(R.id.rb_home);//默认选中首页
+    }
+
+    //切换fragment 每次都会初始化frgament数据
+    public void switchFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_home, fragment).commit();
+    }
+
+    //切换fragment fragment只初始化一次
+    private void switchFragment(Fragment fromFragment, BaseFragment nextFragment) {
+        //判断当前fragment和目标fragment是否是同一个
+        if (mContext != nextFragment) {
+            //不是同一个 当前要显示的fragment就是nextfragment
+            mContext = nextFragment;
+            if (nextFragment != null) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                //判断nextFragment是否添加过
+                if (!nextFragment.isAdded()) {
+                    //nextFragment没被添加过
+
+                    //隐藏当前Fragment 添加nextFragment
+                    if (fromFragment != null) {
+                        transaction.hide(fromFragment);
+                    }
+                    transaction.add(R.id.fl_home, nextFragment).commit();
+                } else {
+                    //nextFragment被添加过
+
+                    //隐藏当前Fragment  显示nextFragment
+                    if (fromFragment != null) {
+                        transaction.hide(fromFragment);
+                    }
+                    transaction.show(nextFragment).commit();
                 }
             }
-        }).start();
-        return res;
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        mLoginHead.setImageResource(R.drawable.tu2);
-    }
-
-    @Override
-    public void sloveString(String result) {
-        Message message = new Message();
-        if ("success".equals(result)) {
-            res = true;
-            message.what = 1002;
-            message.obj = result;
-            handler.sendMessage(message);
         }
     }
+
+    private void initView() {
+        rgmain = (RadioGroup) findViewById(R.id.rg_main);
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }public String getAccountId() {
+        return accountId;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
