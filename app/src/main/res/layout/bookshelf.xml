@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/book_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            fresco:placeholderImage="@drawable/timg" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/book_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="2dp"
+                android:text="book_name"
+                android:textIsSelectable="true"
+                android:textSize="11pt" />
+
+            <TextView
+                android:id="@+id/book_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:text="book_price"
+                android:textIsSelectable="true"
+                android:textSize="10pt" />
+
+            <TextView
+                android:id="@+id/book_description"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingRight="5dip"
+                android:text="描述"
+                android:textIsSelectable="true"
+                android:textSize="10pt" />
+        </LinearLayout>
+        <LinearLayout>
+
+            <ImageButton
+                android:id="@+id/add_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/goods_add_btn" />
+        </LinearLayout>
+    </TableRow>
+
+</TableLayout>
